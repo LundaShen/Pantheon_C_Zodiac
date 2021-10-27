@@ -1,0 +1,74 @@
+pip3 install regex
+pip3 install pandas
+pip3 install wikipedia
+pip install wordcloud
+
+
+import pandas as pd
+import wikipedia
+import re
+from bs4 import BeautifulSoup
+
+
+
+pd.options.mode.chained_assignment = None  # default='warn'
+
+tsv_file = open("/Users/kailu/Downloads/pantheon.tsv")
+
+tsv_read = pd.read_csv(tsv_file, sep="\t")
+
+# Add a new column for “birthday”
+tsv_read["birthday"] = ""
+
+# Delete the rows for the people born before BC, since Wikipedia does not have their dates of birth
+tsv_read.drop(tsv_read[tsv_read["birthyear"].str.startswith("-")].index, inplace=True)
+
+# Determine the Chinese zodiac sign
+tsv_read["C_Zodiac2"]=""
+
+for row in range(0,len(tsv_read)):
+	a_yob = tsv_read.iloc[row]["birthyear"]
+	try:
+		a_yob_int = int(a_yob)
+	except:
+		pass
+	tsv_read.loc[row,"C_Zodiac2"] = (a_yob_int - 4) % 12
+
+
+# Example to group names for each zodiac sign and each gender
+	for row in range(0,len(tsv_read)):
+		gender =  tsv_read.iloc[row]["gender"]
+		if  tsv_read.iloc[row]["C_Zodiac2"]== x:
+			if gender == "Female":
+				CZ_F.append(tsv_read.iloc[row]["givenname"])
+			else:
+				CZ_M.append(tsv_read.iloc[row]["givenname"])
+
+
+
+# Example to count the frequency of name 
+def CountFrequency(my_list):
+    freq = dict()
+    visited = set()
+    listLength = len(my_list)
+    for i in range(listLength):
+        if my_list[i] in visited:
+            continue
+        else:
+            count = 0
+            element = my_list[i]
+            visited.add(my_list[i])
+            for j in range(listLength - i):
+                if my_list[j+i] == element:
+                    count += 1
+    print("Frequency of name is:")
+    print(freq)
+
+CZ_0_F = ['Charlotte', 'Doris', 'Alyssa', 'Lhasa', 'Lucrezia', 'Rebecca', 'Mary', 'Margaret', 'Sonja', 'Donna', 'Catherine', 'Mata', 'Elizabeth', 'George', 'Olivia', 'Hatshepsut', 'Maria', 'Robin', 'Camille', 'Mia', 'Samantha', 'Katherine', 'Glenda', 'Daryl', 'Avril', 'Sarah', 'Gwyneth', 'Helen', 'Hanna', 'Svetlana', 'Charlotte', 'Geraldine', 'Eva', 'Lady', 'Charlotte', 'Dana', 'Julianne', 'Geri', 'Victoria,', 'Roxana', 'Lauren', 'Miriam', 'Dita', 'Claude', 'Delta', 'Sarah', 'Bathsheba', 'Claire', 'America', 'Nena', 'Toni', 'Mandy', 'Ursula', 'Pat', 'Saleh', 'Mary,', 'Tilda', 'Saskia', 'Kathy', 'Letizia,', 'Kristin', 'Kim', 'Jane', 'Mercedes', 'Dianne', "Ka'ahumanu", 'Amanda', 'Nathalie', 'Vanessa', 'Katie', 'Vera', 'Ashlee', 'Conchita', 'Zendaya', 'Anna', 'Elsa', 'Julia', 'Margaret', 'Elizabeth', 'Yulia', 'Cameron', 'Abigail', 'Alyona', 'Karol’na', 'Assia', 'Scarlett', 'Marion', 'Mary', 'Samantha', 'Olivia', 'Marguerite', 'Doda', 'Lindsey', 'Abigail', 'Millvina', 'Katy', 'Eva', 'Marija', 'Katrina', 'Lola', 'Anna-Maria', 'Duffy', 'AlizŽe', 'Carmen', 'Freida', 'Rachel', 'Jennifer', 'Jeanne', 'Hera', 'Leymah', 'Lena', 'Paula', 'Sasha', 'Rebecca']
+
+CountFrequency(CZ_0_F)
+
+
+
+
+
