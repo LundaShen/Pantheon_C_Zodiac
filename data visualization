@@ -1,0 +1,39 @@
+# Example to make bar plot for a zodiac sign
+counts_CZ_0_F=collections.Counter(CZ_0_F)
+counts_CZ_0_F.most_common(50)
+counts_CZ_0_F_df = pd.DataFrame(counts_CZ_0_F.most_common(50),
+                             columns=['names', 'count'])
+
+fig, ax = plt.subplots(figsize=(16, 16))
+
+# Plot horizontal bar graph
+counts_CZ_0_F_df.sort_values(by='count').plot.barh(x='names',
+                      y='count',
+                      ax=ax,
+                      color="pink")
+
+ax.set_title("Given Names of Pantheon with Chinese Zodiac Rat")
+
+plt.show()
+
+# Example to make Name Cloud for a zodiac sign
+# Convert the name list into a string
+CZ_11_F_str=""
+for i in CZ_11_F:
+        CZ_11_F_str += " "+i
+# Define a function to plot word cloud
+def plot_cloud(wordcloud):
+    # Set figure size
+    plt.figure(figsize=(40, 30))
+    # Display image
+    plt.imshow(wordcloud) 
+    # No axis details
+    plt.axis("off");
+    
+# Import package
+from wordcloud import WordCloud, STOPWORDS
+# Generate word cloud
+wordcloud = WordCloud(width= 3000, height = 2000, random_state=1, background_color='salmon', colormap='Pastel1', collocations=False, stopwords = STOPWORDS).generate(CZ_11_F_str)
+# Plot
+plot_cloud(wordcloud)
+
